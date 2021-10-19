@@ -2,7 +2,7 @@
 
 ### 1. Start (select language)
 
-After choosing a language, have to solve the basic 100 problems in codeup! 	👈**(now)**
+After choosing a language, have to solve the basic 100 problems in codeup! 	👈 **(now)**
 
 site address : [codeup](https://codeup.kr/problemsetsol.php?psid=33)
 
