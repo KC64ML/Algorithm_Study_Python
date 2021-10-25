@@ -1,3 +1,4 @@
-a_list= [10,20,30,40,50,60,70]
+array = [[0 for col in range(11)] for row in range(10)]
 
-print(a_list[-2:-3:-1])
+
+print(len(array))
