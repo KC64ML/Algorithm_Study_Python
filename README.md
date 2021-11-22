@@ -6,7 +6,7 @@ After choosing a language, have to solve the basic 100 problems in codeup!
 
 site address : [codeup](https://codeup.kr/problemsetsol.php?psid=33)
 
-
+&nbsp;
 
 ### 2. '이것이 취업을 위한 코딩 테스트다' (book)
 
@@ -20,7 +20,7 @@ site address : [codeup](https://codeup.kr/problemsetsol.php?psid=33)
 
 [BAEKJOON](https://www.acmicpc.net/problem/tags)
 
-
+&nbsp;
 
 ### 3. Solve previous questions in programmers
 
@@ -35,8 +35,8 @@ when i arrived B type in Samsung competency test, will be able to pass!
 (after, edit 3. here)
 
 
-
-
+&nbsp;
+&nbsp;
 
 ****
 
