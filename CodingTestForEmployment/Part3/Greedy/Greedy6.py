@@ -32,3 +32,4 @@ def solution(food_times, k):
 
 
 print(solution([3, 1, 2,4], 5))
+
