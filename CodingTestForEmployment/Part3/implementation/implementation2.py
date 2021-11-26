@@ -10,5 +10,7 @@ for i in range(len(s)):
         alpa.append(s[i])
 
 alpa.sort()
-alpa.append(str(sum))
+
+if sum != 0:
+    alpa.append(str(sum))
 print(''.join(alpa))
