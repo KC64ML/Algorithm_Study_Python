@@ -321,6 +321,200 @@ b = ")("
 print(solution(a))
 ```
 
+&nbsp;
+
+### [Q 19] 연산자 끼워 넣기
+
+최대 11개의 수가 주어졌을 때, 각 수와 수 사이에 사칙연산 중 하나를 삽입하는 모든 경우에 대하여 만들어질 수 있는 결과의 최댓값 및 최솟값을 구하면 된다.
+
+모든 경우의 수를 계산하기 위하여(완전 탐색) DFS 혹은 BFS를 이용하여 문제를 해결할 수 있다.
+
+**중복 순열(product) 라이브러리**
+
+```python
+from itertools import product
+
+n = 4
+print(list(product(['+', '-', '*', '/'], repeat=(n-1))))
+```
+
+&nbsp;
+
+소스
+
+```python
+# from itertools import product
+# n = "1+2+3+4"
+#
+# n = 4
+#
+# print(list(product(['+','-','*','/'],repeat=(n-1))))
+
+n = int(input())
+# 연산을 수행하고자 하는 수 리스트
+data = list(map(int, input().split()))
+# 더하기, 빼기, 곱하기, 나누기 연산자 개수
+add, sub, mul, div = map(int, input().split())
+
+# 최솟값과 최댓값 초기화
+min_value = 1e9
+max_value = -1e9
+
+# 깊이 우선 탐색(DFS) 메서드
+def dfs(i, now):
+    global min_value, max_value, add, sub, mul, div
+
+    if(i == n):
+        min_value = min(min_value, now)
+        max_value = max(max_value, now)
+    else:
+        # 각 연산자에 대하여 재귀적으로 수행
+        if add > 0:
+            add -= 1
+            dfs(i+1, now + data[i])
+            add += 1
+        if sub > 0:
+            sub -= 1
+            dfs(i+1, now - data[i])
+            sub += 1
+        if mul > 0:
+            mul -= 1
+            dfs(i+1, now * data[i])
+            mul += 1
+        if div > 0:
+            div -= 1
+            dfs(i+1, int(now / data[i]))
+            div += 1
+
+
+# DFS 메서드 호출
+dfs(1, data[0])
+
+# 최댓값과 최솟값 차례대로 출력
+print(max_value)
+print(min_value)
+
+```
+
+&nbsp;
+
+### [Q 20] 감시 피하기
+
+https://www.acmicpc.net/problem/18428
+
+빅오 표기법 : O(N)이라면, 10억까지 가능하다. O(N^2)이라면 10억에 N으로 나눈 것까지 가능하다.
+
+&nbsp;
+
+장애물을 정확히 3개 설치하는 모든 경우를 확인하며, 매 경우마다 모든 학생을 감시로부터 피하도록 할 수 있는지의 여부를 출력해야 한다.
+
+장애물을 정확히 3개 설치하는 모든 경우의 수
+
+* 복도의 크기 N X N이며 N은 최대 6이다.
+* 장애물을 정확히 3채 설치하는 모든 조합의 수는 최악의 경우 36C3이다.
+
+&nbsp;
+
+3개의 장애물이 설치된 모든 조합마다, 선생님들의 위치 좌표를 하나씩 확인하고 각각 선생님의 위치에서 상, 하, 좌, 우를 확인하며 학생이 한 명이라도 감지되는지를 확인해야한다.
+
+선생님의 위치(T)에서 상, 하, 좌, 우의 위치를 확인하며 학생(S)이 존재하는지 확인하면 된다.
+
+&nbsp;
+
+소스
+
+```python
+from itertools import combinations
+
+n = int(input()) # 복도의 크기
+
+graph = [] # 복도 정보
+teachers = [] # 모든 선생님 위치 정보
+space = [] # 모든 빈 공간 위치 정보
+
+for i in range(n):
+    graph.append(list(input().split()))
+
+    for j in range(n):
+        if graph[i][j] == 'T':
+            teachers.append((i, j))
+        elif graph[i][j] == 'X':
+            space.append((i, j))
+
+# 특정 방향으로 감시를 진행(학생 발견: True, 학생 미발견: False)
+def watch(x, y, directions):
+    # 왼쪽 방향으로 감시
+    if directions == 0:
+        while y >= 0:
+            if graph[x][y] == 'S': # 학생이 있는 경우
+                return True
+            if graph[x][y] == '0': # 장애물이 있는 경우
+                return False
+            y -= 1
+    # 오른쪽 방향으로 감시
+    if directions == 1:
+        while y < n:
+            if graph[x][y] == 'S': # 학생이 있는 경우
+                return True
+            if graph[x][y] == '0': # 장애물이 있는 경우
+                return False
+
+            y += 1
+    # 위쪽 방향으로 감시
+    if directions == 2:
+        while x >= 0:
+            if graph[x][y] == 'S': # 학생이 있는 경우
+                return True
+            if graph[x][y] == '0': # 장애물이 있는 경우
+                return False
+            x -= 1
+    # 아래쪽 방향으로 감시
+    if directions == 3:
+        while x < n:
+            if graph[x][y] == 'S':  # 학생이 있는 경우
+                return True
+            if graph[x][y] == '0':  # 장애물이 있는 경우
+                return False
+            x += 1
+    return False
+
+
+# 장애물 설치 이후에, 한 명이라도 학생이 감지되는지 검사
+def process():
+    # 모든 선생님의 위치를 하나씩 확인
+    for x, y in teachers:
+        # 4가지 방향으로 학생을 감지할 수 있는지 확인
+        for i in range(4):
+            if watch(x, y, i):
+                return True
+    return False
+
+find = False # 학생이 한 명도 감지되지 않도록 설치할 수 있는지의 여부
+
+# 빈 공간에서 3개를 뽑는 모든 조합을 확인
+for data in combinations(space,3):
+    # 장애물 설치 해보기
+    for x, y in data:
+        graph[x][y] = '0'
+    # 학생이 한 명도 감지되지 않는 경우
+    if not process():
+        # 원하는 경우를 발견한 것임
+        find = True
+        break
+    # 설치된 장애물을 다시 없애기
+    for x, y in data:
+        graph[x][y] = 'X'
+
+if find:
+    print('YES')
+else:
+    print('NO')
+```
+
+ 
+
+
+
 
 
 &nbsp;
