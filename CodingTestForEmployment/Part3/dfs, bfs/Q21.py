@@ -1,76 +1,66 @@
 from collections import deque
 
+# 땅의 크기(N), L, R값을 입력받기
 n, l, r = map(int, input().split())
 
-list_arr = []
-
-for i in range(n):
-    list_arr.append(list(map(int, input().split())))
+# 전체 나라의 정보(N x N)를 입력받기
+graph = []
+for _ in range(n):
+    graph.append(list(map(int, input().split())))
 
 dx = [-1, 0, 1, 0]
-dy = [0, 1, 0, -1]
+dy = [0, -1, 0, 1]
 
-total_cnt = 0
+result = 0
 
-
-
-def bfs(x, y, visited):
-    global cnt
-    global list_sum
-    list_find_bfs = []
-
-    queue = deque()
-    queue.append((x, y))
-    while queue:
-        cur_data = queue.popleft()
-
+# 특정 위치에서 출발하여 모든 연합을 체크한 뒤에 데이터 갱신
+def process(x, y, index):
+    # (x, y)의 위치와 연결된 나라(연합) 정보를 담는 리스트
+    united = []
+    united.append((x, y))
+    # 너비 우선 탐색(BFS)을 위한 큐 자료구조 정의
+    q = deque()
+    q.append((x, y))
+    union[x][y] = index # 현재 연합의 번호 할당
+    summary = graph[x][y]  # 현재 연합의 전체 인구 수
+    count = 1 # 현재 연합의 국가 수
+    # 큐가 빌 때까지 반복(BFS)
+    while q:
+        x, y = q.popleft()
+        # 현재 위치에서 4가지 방향을 확인하여
         for i in range(4):
-            next_x = cur_data[0] + dx[i]
-            next_y = cur_data[1] + dy[i]
+            nx = x + dx[i]
+            ny = y + dy[i]
+            # 바로 옆에 있는 나라를 확인하여
+            if 0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1:
+                # 옆에 있는 나라와 인구 차이가 L명 이상, R명 이하라면
+                if l <= abs(graph[nx][ny] - graph[x][y]) <= r:
+                    q.append((nx, ny))
+                    # 연합에 추가
+                    union[nx][ny] = index
+                    summary += graph[nx][ny]
+                    count += 1
+                    united.append((nx, ny))
+    # 연합 국가끼리 인구를 분해
+    for i, j in united:
+        graph[i][j] = summary // count
+    return count
 
-            if next_x < 0 or next_x >= n or next_y < 0 or next_y >= n:
-                continue
-            if visited[next_x][next_y] == True:
-                continue
+total_count = 0
 
-            dis_data = abs(list_arr[cur_data[0]][cur_data[1]] - list_arr[next_x][next_y])
-            if dis_data < l or dis_data > r:
-                continue
-            visited[next_x][next_y] = True
-
-            cnt += 1
-            list_find_bfs.append((next_x, next_y))
-            list_sum += list_arr[next_x][next_y]
-            queue.append((next_x, next_y))
-
-    if len(list_find_bfs) != 0 and visited[x][y] == False:
-        list_find_bfs.append((x, y))
-        list_sum += list_arr[x][y]
-    return list_find_bfs
-
+# 더 이상 인구 이동을 할 수 없을 때까지 반복
 while True:
-    visited = [[False] * n for _ in range(n)]
-    cnt = 0
-    list_sum = 0
-    result = []
-
+    union = [[-1] * n for _ in range(n)]
+    index = 0
     for i in range(n):
         for j in range(n):
-            if visited[i][j] == True:
-                continue
-
-            result += bfs(i, j, visited)
-
-
-    for i in range(len(result)):
-        for j in range(2):
-            list_arr[result[i][0]][result[i][1]] = (list_sum // cnt)
-
-    print(list_arr)
-
-    if cnt == 0:
+            if union[i][j] == -1: # 해당 나라가 아직 처리되지 않았다면
+                process(i, j, index)
+                index += 1
+    # 모든 인구 이동이 끝난 경우
+    if index == n * n:
         break
+    total_count += 1
 
-    total_cnt += 1
-
-print(total_cnt)
+# 인구 이동 횟수 출력
+print(total_count)
