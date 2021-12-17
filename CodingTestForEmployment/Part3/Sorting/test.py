@@ -1,13 +1,18 @@
 import heapq
 
-def heapsort(iterable):
-    heap = []
-    result = []
-    for value in iterable:
-        heapq.heappush(heap, value)
-    for i in range(len(heap)):
-        result.append(heapq.heappop(heap))
-    return result
+n = int(input())
 
-result = heapsort([1,9,0,7,8,6,3,5])
-print(result)
+# 힙(Heap)에 초기 카드 묶음을 모두 삽입
+heap = []
+for i in range(n):
+    data = int(input())
+    heapq.heappush(heap, data)
+
+result = 0
+
+# 힙(Heap)에 원소가 1개 남을 때까지
+while len(heap) != 1:
+    # 가장 작은 2개의 카드 묶음 꺼내기
+    one = heapq.heappop(heap)
+    print(one)
+

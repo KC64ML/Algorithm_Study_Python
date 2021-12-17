@@ -1,30 +1,28 @@
 def solution(N, stages):
     answer = []
+    length = len(stages)
 
-    s_len = len(stages)
+    # 스테이지 번호를 1부터 N까지 증가시키며
+    for i in range(1, N + 1):
+        # 해당 스테이지에 머물러 있는 사람의 수 계산
+        count = stages.count(i)
 
-    sorted(stages)
-    cur_data = 0
-    total_data = s_len
-
-    for idx in range(1, N + 1):
-        # s_len 길이만큼 돌린다.
-        # count로 확인하고 다음 턴 배열에서는 제외 시킨다. s_len에 나온 count 개수만큼 빼준다.
-        cur_data = stages.count(idx)
-
-        if cur_data == total_data:
-            answer.append((1, idx))
+        # 실패율 계산
+        if length == 0:
+            fail = 0
         else:
-            result = cur_data / total_data
-            answer.append((result, idx))
+            fail = count / length
 
-        print("cur_data : ", cur_data, " total_data : ", total_data)
+        # 리스트에 (스테이지 번호, 실패율) 원소 삽입
+        answer.append((i, fail))
+        length -= count
 
-        total_data -= cur_data
+    # 실패율을 기준으로 각 스테이지를 내림차순 정렬
+    answer = sorted(answer, key=lambda t: t[1], reverse=True)
 
-    result = sorted(answer, key=lambda x: (-x[0], x[1]))
-    print(result)
+    # 정렬된 스테이지 번호 출력
+    answer = [i[0] for i in answer]
     return answer
 
 
-solution(4, [1, 2, 3, 2, 1, 2])
+print(solution(5, [2, 1, 2, 6, 2, 4, 3, 3]))
