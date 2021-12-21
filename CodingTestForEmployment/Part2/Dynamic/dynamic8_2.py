@@ -1,31 +1,21 @@
+# 정수 X를 입력받기
 x = int(input())
 
-dp = [0] * 30001
-dp[1] = 0
-dp[2] = 1
-dp[3] = 1
-dp[4] = 2
-dp[5] = 1
+# 앞서 계산된 결과를 저장하기 위한 DP 테이블 초기화
+d = [0] * 30001
 
+# 다이나믹 프로그래밍(Dynamic Programming) 진행(보텀업)
+for i in range(2, x+1):
+    # 현재의 수에서 1을 빼는 경우
+    d[i] = d[i - 1] + 1
+    # 현재의 수가 2로 나누어 떨어지는 경우
+    if i % 2 == 0:
+        d[i] = min(d[i], d[i // 2] + 1)
+    # 현재의 수가 3으로 나누어 떨어지는 경우
+    if i % 3 == 0:
+        d[i] = min(d[i], d[i // 3] + 1)
+    # 현재의 수가 5로 나누어 떨어지는 경우
+    if i % 5 == 0:
+        d[i] = min(d[i], d[i // 5] + 1)
 
-for idx in range(6, 31):
-    two_data = 9999999
-    three_data = 9999999
-    five_data = 9999999
-
-
-    if idx % 5 != 0 and idx % 3 != 0 and idx % 2 != 0:
-        idx -= 1
-
-    if idx % 5 == 0:
-        five_data = dp[idx // 5] + 1
-    elif idx % 3 == 0:
-        three_data = dp[idx // 3] + 1
-    elif idx % 2 == 0:
-        two_data = dp[idx // 2] + 1
-
-    result = min(five_data, three_data, two_data)
-    dp[idx] = result
-
-
-print(dp[x])
+print(d[x])
