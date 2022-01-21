@@ -10,13 +10,13 @@ site address : [codeup](https://codeup.kr/problemsetsol.php?psid=33)
 
 ### 2. '이것이 취업을 위한 코딩 테스트다' (book)
 
-1) study book 👈 **(now)**
+1) study book 
 
 2) go to programmers, Solve Steps 1 and 2
 
 [programmers](https://programmers.co.kr/learn/challenges)
 
-3) go to baekjoon, when i can't solve the 'A' algorithm well, Solving 50 questions each.
+3) go to baekjoon, when i can't solve the 'A' algorithm well, Solving 50 questions each. 👈 **(now)**
 
 [BAEKJOON](https://www.acmicpc.net/problem/tags)
 
