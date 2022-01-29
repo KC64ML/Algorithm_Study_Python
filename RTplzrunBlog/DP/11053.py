@@ -2,7 +2,7 @@ n = int(input())
 
 dp = [1] * (n + 1)
 
-arr = list(map(int, input().split() ))
+arr = list(map(int, input().split()))
 
 
 for i in range(n):
