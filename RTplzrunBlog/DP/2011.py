@@ -1,24 +1,25 @@
-# rstrip : 공백 제거
+import sys
 
-pw = list(map(int, input().rstrip()))
+pw = list(map(int, sys.stdin.readline().rstrip()))
 
 dp = [0] * (len(pw) + 1)
 
-dp[0] = 1
+if pw[0] == 0:
+    print("0")
 
-if len(pw) >= 1:
-
+else:
     pw = [0] + pw
-    dp[1] = 1
-
+    dp[0] = dp[1] = 1
     for idx in range(2, len(pw)):
-        print(idx)
-        if 10 <= pw[idx - 1] * 10 + pw[idx] <= 26:
-            # 현재 위치에서 2번째 뒤로
-            dp[idx] += dp[idx - 2]
-            print("10 과 26 사이, ", idx,  dp[idx])
-
-        if 1 <= pw[idx] <= 9:
+        # 중간에 0이 있으면 이전 결과를 그대로 가져와야한다.
+        if pw[idx] >= 1:
             dp[idx] += dp[idx - 1]
+        print("현재")
+        if 10 <= pw[idx - 1] * 10 + pw[idx] <= 26:
+            dp[idx] += dp[idx - 2]
+            print("idx 가", idx, "pw [", idx - 1, "] : ", pw[idx - 1], "pw [", idx, "] : ", pw[idx], "dp[idx - 1] : ",
+                  dp[idx - 1], "dp[idx] : ", dp[idx])
 
-print(dp[len(pw) - 1])
+    print(dp)
+    print(dp[len(pw) - 1] % 1000000)
+
