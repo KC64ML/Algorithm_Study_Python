@@ -2,21 +2,16 @@ from sys import stdin as s
 
 n = int(s.readline())
 
-arr = []
+dic = {}
 
 for _ in range(n):
-    arr.append(s.readline().rstrip())
+    card = int(s.readline())
 
-result = 0
-result_data = arr[0]
+    if card in dic:  # 딕셔너리안에 이미 card가 존재한다면
+        dic[card] += 1
+    else:  # 아니라면
+        dic[card] = 1
 
-for in_data in arr:
-    if result < arr.count(in_data) and int(result_data) > int(in_data):
-        result = arr.count(in_data)
-        result_data = in_data
+result = sorted(dic.items(), key=lambda x: (-x[1], x[0]))
 
-
-print(result_data)
-
-
-
+print(result[0][0])
