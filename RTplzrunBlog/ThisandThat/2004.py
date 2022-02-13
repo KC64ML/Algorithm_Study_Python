@@ -1,23 +1,18 @@
-from itertools import combinations
 from sys import stdin as s
 
 n, m = map(int, s.readline().split())
 
-cb = list(combinations(range(1, n + 1), m))
 
-cb_size = len(cb)
+def comb(cur_data, div):
+    cnt = 0
+    while cur_data:
+        cur_data //= div
+        cnt += cur_data
 
-result = 0
-
-while cb_size:
-    if cb_size % 10 != 0:
-        break
-
-    result += 1
-    cb_size //= 10
-
-print(result)
+    return cnt
 
 
+two_data = comb(n, 2) - comb(m, 2) - comb((n - m), 2)
+five_data = comb(n, 5) - comb(m, 5) - comb((n - m), 5)
 
-
+print(min(two_data, five_data))
