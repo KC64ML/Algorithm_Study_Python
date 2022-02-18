@@ -1,17 +1,11 @@
 from sys import stdin as s
-from collections import deque
 
 
-def bfs(start, graph, visited):
-    queue = deque()
-    queue.append(start)
+def dfs(start, graph, visited):
     visited[start] = True
-
-    while queue:
-        node = queue.popleft()
-        if visited[node]:
-            return False
-
+    next = graph[start]
+    if not visited[next]:
+        dfs(next, graph, visited)
 
 
 t = int(s.readline())
@@ -20,7 +14,12 @@ for _ in range(t):
     n = int(s.readline())
     visited = [False] * (n + 1)
     graph = list(map(int, s.readline().split()))
+    graph = [0] + graph
+    cnt = 0
 
     for i in range(1, n + 1):
         if not visited[i]:
-            bfs(i, graph, visited)
+            dfs(i, graph, visited)
+            cnt += 1
+
+    print(cnt)
