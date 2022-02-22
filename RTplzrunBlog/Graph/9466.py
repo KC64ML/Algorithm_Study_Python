@@ -1,41 +1,35 @@
 from sys import stdin as s
 
+import sys
+
+sys.setrecursionlimit(111111)
+# 파이썬은 기본적으로 재귀 깊이 제한이 매우 낮기 때문에 늘려줘야 한다.
+
 t = int(s.readline())
 
-cnt = 0
 
-def dfs(start, visited, arr):
-    if visited[start]:
-        return -1
-
-    print(start, end=" ")
+def dfs(start):
+    global result
     visited[start] = True
-    dfs(arr[start], visited, arr)
+    cycle.append(start)
+    next = graph[start]
 
-    return 1
+    if visited[next]:
+        if next in cycle:
+            result += cycle[cycle.index(next):]  # next가 시작 점 : 문제에서 보면 4 -> 7 -> 6에서 4가 시작점이라면, 시작점 인덱스 시작부터 끝까지(사이클)
+        return
+    else:
+        dfs(next)
 
 
 for _ in range(t):
     n = int(s.readline())
-    arr = list(map(int, s.readline().split()))
-    arr = [0] + arr
-    print(arr)
-    visited = [False] * (len(arr) + 1)
-    result = 0
+    graph = [0] + list(map(int, s.readline().split()))
+    visited = [True] + [False] * n
+    result = []
+    for i in range(1, n + 1):
+        if not visited[i]:
+            cycle = []
+            dfs(i)
 
-    for i in range(len(arr)):
-        if i == arr[i]:
-            continue
-
-        if visited[i]:
-            continue
-
-        print("체크 ", i)
-        cnt = i
-        if dfs(i, visited, arr) == -1:
-            result += 1
-        print(visited)
-        print()
-    print(visited)
-    print(result)
-
+    print(n - len(result))
