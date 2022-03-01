@@ -1,60 +1,111 @@
+# # 이와 같이 시작점이 정해진 그래프에서는 dfs를 사용하며, 미리 해당 점들을 저장해놓기
+#
+# import sys
+# from collections import deque
+#
+# m, n = map(int, sys.stdin.readline().split())
+# graph = []
+#
+# x_coordinate = [-1, 0, 1, 0]
+# y_coordinate = [0, 1, 0, -1]
+#
+#
+# def bfs():
+#     day = 0
+#     while queue:
+#         # print("길이", len(queue))
+#         day += 1
+#         # 현재 위치에서 좌우 펼치면서 확인 돌림
+#         for _ in range(len(queue)):
+#             cur_x, cur_y = queue.popleft()
+#             for i in range(4):
+#                 next_x = cur_x + x_coordinate[i]
+#                 next_y = cur_y + y_coordinate[i]
+#
+#                 if (0 <= next_x < n) and (0 <= next_y < m) and (graph[next_x][next_y] == 0):
+#                     graph[next_x][next_y] = 1
+#                     queue.append((next_x, next_y))
+#
+#     return day
+#
+# for _ in range(n):
+#     graph.append(list(map(int, sys.stdin.readline().split())))
+#
+#
+# queue = deque()
+#
+# for i in range(n):
+#     for j in range(m):
+#         if graph[i][j] == 1:
+#             queue.append((i, j))
+# day = bfs()
+#
+# check = False
+#
+# for dot in graph:
+#     if 0 in dot:
+#         print(-1)
+#         check = True
+#         break
+# if not check:
+#     print(day-1)
+#
+#
+#
+
+
+# 이와 같이 시작점이 정해진 그래프에서는 dfs를 사용하며, 미리 해당 점들을 저장해놓기
+
 import sys
 from collections import deque
 
 m, n = map(int, sys.stdin.readline().split())
-graph = [[-1] * (m + 1)]
+graph = []
+
+queue = deque()
 
 x_coordinate = [-1, 0, 1, 0]
 y_coordinate = [0, 1, 0, -1]
 
+for _ in range(n):
+    graph.append(list(map(int, sys.stdin.readline().split())))
 
-def bfs(x, y):
-    queue = deque()
-    queue.append((x, y, 1))
 
+def bfs():
     while queue:
-        cur_x, cur_y, cur_date = queue.popleft()
-        graph[cur_x][cur_y] = cur_date
-
-        visited_minus_cnt = 0
+        cur_x, cur_y = queue.popleft()
 
         for i in range(4):
             next_x = cur_x + x_coordinate[i]
             next_y = cur_y + y_coordinate[i]
 
-            if 1 <= next_x <= n and 1 <= next_y <= m:
-                if graph[next_x][next_y] == 1:
-                    continue
-                if graph[next_x][next_y] == -1:
-                    visited_minus_cnt += 1
-                    continue
-                if graph[next_x][next_y] <= (cur_date + 1):
-                    continue
-
-                queue.append((next_x, next_y, cur_date + 1))
-
-        if visited_minus_cnt == 4:
-            return False
-
-    return True
+            if (0 <= next_x < n) and (0 <= next_y < m) and (graph[next_x][next_y] == 0):
+                graph[next_x][next_y] = graph[cur_x][cur_y] + 1
+                queue.append((next_x, next_y))
 
 
-for _ in range(n):
-    graph.append([-1] + list(map(int, sys.stdin.readline().split())))
-
-check = True
-
-for i in range(1, n + 1):
-    check = True
-    for j in range(1, m + 1):
+for i in range(n):
+    for j in range(m):
         if graph[i][j] == 1:
-            if not bfs(i, j):
-                print(-1)
-                check = False
-                break
+            queue.append((i, j))
 
-    if not check:
-        break
 
-if check:
-    print(graph)
+bfs()
+
+result = -2
+isTrue = False
+
+for i in graph:
+    for arr_data in i:
+        if arr_data == 0:
+            isTrue = True
+
+        # print(result, arr_data)
+        result = max(result, arr_data)
+        # print(result)
+
+
+if isTrue:
+    print(-1)
+else:
+    print(result - 1)
