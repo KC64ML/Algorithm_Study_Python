@@ -14,9 +14,11 @@ y_coordinate = [0, 1, 0, -1]
 
 
 def bfs(x, y):
+    global count
     queue = deque()
     queue.append((x, y))
     visited[x][y] = True
+    graph[x][y] = count
     while queue:
         cur_x, cur_y = queue.popleft()
 
@@ -29,59 +31,65 @@ def bfs(x, y):
                     continue
 
                 visited[nx][ny] = True
-                island[len(island) - 1].append((nx, ny))
+                graph[nx][ny] = count
                 queue.append((nx, ny))
 
 
 def bfs2(cur_idx):
     # 방문한지 안한지 확인하기 위해
-    visited2 = [[False] * n for _ in range(n)]
-    queue2 = deque()
+    # dist -1로 초기화
+    dist = [[-1] * n for _ in range(n)]
+    queue = deque()
     global result
 
-    for idx in range(len(island[cur_idx])):
-        (x, y) = island[cur_idx][idx]
-        visited2[x][y] = True
-        queue2.append((x, y, 0))
+    for i in range(n):
+        for j in range(n):
+            if graph[i][j] == cur_idx:
+                queue.append((i, j))
+                dist[i][j] = 0
+                # queue에 삽입하고 현재 위치를 0으로
 
-    while queue2:
-        cur_x, cur_y, cur_len = queue2.popleft()
+    while queue:
+        # 육지지역 좌표를 꺼낸다.
+        cur_x, cur_y = queue.popleft()
 
         for i in range(4):
             nx = x_coordinate[i] + cur_x
             ny = y_coordinate[i] + cur_y
 
             if 0 <= nx < n and 0 <= ny < n:
-                if not visited2[nx][ny] and graph[nx][ny]:
-                    result = min(result, cur_len)
-                elif not visited2[nx][ny] and not graph[nx][ny]:
-                    visited2[nx][ny] = True
-                    queue2.append((nx, ny, cur_len + 1))
+                # 육지지역이지만, 현재 인덱스 육지가 아닌 다른 육지일 경우
+                if graph[nx][ny] != cur_idx and graph[nx][ny]:
+                    result = min(result, dist[cur_x][cur_y])
+                    return
+                elif dist[nx][ny] == -1 and not graph[nx][ny]:
+                    # 방문하지 않은 바다일 경우
+                    dist[nx][ny] = dist[cur_x][cur_y] + 1
+                    queue.append((nx, ny))
+
     return result
-    # 현재 해당 좌표안이라면
-    # 만약 좌표값이 0이고, 방문한 곳이 아니라면 큐에 삽입한다.
-    # 만약 좌표값이 1일 때는 가장 작은 값을 찾는다.
 
 
-island = []
+count = 1
 
 for i in range(n):
     for j in range(n):
         if graph[i][j] and (not visited[i][j]):
-            island.append(deque())
-            island[len(island) - 1].append((i, j))
             bfs(i, j)
+
+            # 육지 지역 구간 나누기 위해
+            count += 1
 
 result = sys.maxsize
 
-# 해당 구간만 확인하기
-for i in range(len(island)):
+# 총 육지 크기 만큼 돌리면서, 해당 인덱스가 1번 육지, 2번 육지 등이 된다.
+for i in range(1, count):
     bfs2(i)
 
 print(result)
 
 
-
+#
 # import sys
 # from collections import deque
 #
@@ -158,5 +166,5 @@ print(result)
 #     bfs2(i)
 #
 # print(answer)
-
-# 참고 : https://kyun2da.github.io/2021/04/22/makeBridge/
+#
+# # 참고 : https://kyun2da.github.io/2021/04/22/makeBridge/
