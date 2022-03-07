@@ -1,35 +1,45 @@
-import sys
+from sys import stdin
+from collections import deque
 
-input = sys.stdin.readline
-sys.setrecursionlimit(10**9)
+read = stdin.readline
 
-n = int(input())
-graph = [[] for _ in range(n + 1)]
+v = int(read())
 
+graph = [[] for _ in range(v + 1)]
 
-def dfs(x, wei):
-    for i in graph[x]:
-        a, b = i
-        if distance[a] == -1:
-            distance[a] = wei + b
-            dfs(a, wei + b)
+for _ in range(v):
+    c = list(map(int, read().split()))
+
+    for e in range(1, len(c) - 2, 2):
+        graph[c[0]].append((c[e], c[e + 1]))
 
 
-# 트리 구현
-for _ in range(n - 1):
-    a, b, c = map(int, input().split())
-    graph[a].append([b, c])
-    graph[b].append([a, c])
+def bfs(start):
+    visited = [-1] * (v + 1)
+    queue = deque()
+    queue.append(start)
+    visited[start] = 0
 
-# 1번 노드에서 가장 먼 곳을 찾는다.
-distance = [-1] * (n + 1)
-distance[1] = 0
-dfs(1, 0)
+    # 거리, 노드
+    _max = [0, 0]
 
-# 위에서 찾은 노드에 대한 가장 먼 노드를 찾는다.
-start = distance.index(max(distance))
-distance = [-1] * (n + 1)
-distance[start] = 0
-dfs(start, 0)
+    while queue:
+        c = queue.popleft()
 
-print(max(distance))
+        # e: 노드, wei : 거리
+        for e, wei in graph[c]:
+            if visited[e] == -1:
+                visited[e] = visited[c] + wei  # 현재 c를 기준, 시작 노드에서 c까지 거리 + (노드 c에서 노드 d까지 거리)
+                queue.append(e) # 현재 노드 저장
+
+                # 방문한 노드라면, 길이를 잰다.
+                if _max[0] < visited[e]:
+                    _max = visited[e], e
+
+    return _max
+
+
+distance, node = bfs(1)
+distance, node = bfs(node)
+
+print(distance)
