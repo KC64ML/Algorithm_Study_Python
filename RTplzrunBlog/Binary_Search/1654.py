@@ -1,19 +1,36 @@
 import sys
-K, N = map(int, input().split())
-lan = [int(sys.stdin.readline()) for _ in range(K)]
-start, end = 1, max(lan) #이분탐색 처음과 끝위치
+
+read = sys.stdin.readline
 
 
-def quick_sort(array):
-    # 리스트가 하나 이하의 원소만을 담고 있다면 종료
-    if len(array) <= 1:
-        return array
+K, N = map(int, read().split())
+arr = [int(read()) for _ in range(K)]
+start, end = 1, max(arr) #이분탐색 처음과 끝위치
 
-    pivot = array[0]  # 피벗은 첫 번째 원소
-    tail = array[1:]  # 피벗을 제외한 리스트
 
-    left_side = [x for x in tail if x <= pivot]  # 분할된 왼쪽 부분
-    right_side = [x for x in tail if x > pivot]  # 분할된 오른쪽 부분
+_max = max(arr)
 
-    # 분할 이후 왼쪽 부분과 오른쪽 부분에서 각각 정렬을 수행하고, 전체 리스트를 반환
-    return quick_sort(left_side) + [pivot] + quick_sort(right_side)
+# 반드시 max에서 +1 값이어야 한다.
+_max += 1
+
+_min = 0 # 탐색 길이 최솟값
+_mid = 0 # 탐색 길이 중간값
+
+while _min < _max:
+
+    # 범위 내에서 중간 길이를 구한다.
+    _mid = (_max + _min) // 2
+
+    count = 0
+
+    # arr[idx] // 중간 길이로 잘라서 총 몇개가 만들어지는지를 구한다.
+    for idx in range(len(arr)):
+        count += (arr[idx] // _mid)
+
+    if count < N:
+        _max = _mid
+    else:
+        _min = _mid + 1
+
+
+print(_min-1)
