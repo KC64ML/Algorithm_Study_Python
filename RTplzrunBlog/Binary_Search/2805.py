@@ -6,37 +6,28 @@ n, m = map(int, read().split())
 
 arr = list(map(int, read().split()))
 
-arr.sort()
+start, end = 1, max(arr)  # 이분 탐색 검색 범위 설정
 
-sta = 0
-end = len(arr)-1
-total = 0
+while start <= end:
+    # print("start, end : ", start, end, end=" ")
+    mid = (start + end) // 2
+    find_m = 0
 
-while sta < end:
-    mid = (arr[sta] + arr[end]) // 2
+    for i in arr:
+        if i > mid:
+            find_m += (i - mid)
 
-    left_max = 0
-    right_min = 0
-    check = False
-    result = 0
 
-    for i in range(sta, end + 1):
-        if mid < arr[i]:
-            if not check:
-                left_max = (i - 1)
-                right_min = i
+    # 발목 높이 m보다 크거나 같다면 start를 늘린다.
+    # 발목 높이 m보다 작다면 end를 줄인다.
 
-            result += arr[i] - mid
-
-    if result == m:
-        total = result
-        break
-    elif result < m:
-        end = left_max
+    if find_m >= m:
+        start = mid + 1
     else:
-        sta = right_min
+        end = mid - 1
 
-print(total)
+    # print("mid : ",mid)
+
+print(end)
 
 
-# 참고 https://claude-u.tistory.com/446
