@@ -1,8 +1,6 @@
-n = [1,2,3,4,5]
+list_a = [1, 2, 3]
 
-answer = []
+print(dict.fromkeys(list_a, 0))
 
-for i in range(n):
-    print(1)
 
-print(answer)
+
