@@ -1,35 +1,38 @@
 import sys
+input=sys.stdin.readline
 
-sys.setrecursionlimit(2 ** 8)
+def merge(a,b):
+    global cnt
+    la,lb=len(a),len(b)
+    i,j=0,0
+    temp=[]
+    while i<la and j<lb:
+        if a[i]>b[j]:
+            temp.append(b[j])
+            j+=1
+            cnt+=la-i
+        else:
+            temp.append(a[i])
+            i+=1
+    if i==la:
+        temp.extend(b[j:])
+    else:
+        temp.extend(a[i:])
+    return temp
 
-read = sys.stdin.readline
-
-n = int(read())
-
-bubble = list(map(int, read().split()))
-
-result = 0
-
-
-def quick_sort(arr):
-    global result
-
-    if len(arr) <= 1:
+def merge_sort(arr):
+    if len(arr)<=1:
         return arr
+    left=0
+    right=len(arr)-1
+    mid=(left+right)//2
+    return merge(merge_sort(arr[left:mid+1]),merge_sort(arr[mid+1:]))
 
-    pivot = arr[0]
-    tail = arr[1:]
-
-    left_node = [x for x in tail if x < pivot]
-    right_node = [x for x in tail if x > pivot]
-
-    result += (len(left_node) + len(right_node))
-
-    return quick_sort(left_node) + [pivot] + quick_sort(right_node)
-
-
-quick_sort(bubble)
-print(result)
+n=int(input())
+cnt=0
+arr=list(map(int,input().split()))
+merge_sort(arr)
+print(cnt)
 
 
-# 참고 자료 : https://cantcoding.tistory.com/33
+# https://cantcoding.tistory.com/33
