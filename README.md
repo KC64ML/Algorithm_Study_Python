@@ -2,7 +2,7 @@
 
 ### 1. Start (select language)
 
-After choosing a language, have to solve the basic 100 problems in codeup! 	
+After choosing a language, have to solve the basic 100 problems in codeup! ⭕️
 
 site address : [codeup](https://codeup.kr/problemsetsol.php?psid=33)
 
@@ -10,7 +10,7 @@ site address : [codeup](https://codeup.kr/problemsetsol.php?psid=33)
 
 ### 2. '이것이 취업을 위한 코딩 테스트다' (book)
 
-1) study book 
+1) study book ⭕
 
 2) go to programmers, Solve Steps 1 and 2
 
