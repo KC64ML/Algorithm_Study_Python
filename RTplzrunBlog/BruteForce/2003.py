@@ -29,6 +29,9 @@ while end <= n:
         partition -= arr[start]
         start += 1
 
+    print("start : ", start, " end : ", end, "result : ", result, end=" ")
+    print("permission : ", partition, " arr[start] : ", arr[start], "arr[end] : ", arr[end])
+
     # 도착했다면 횟수를 증가한다.
     if partition == m:
         result += 1

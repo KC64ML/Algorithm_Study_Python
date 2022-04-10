@@ -1,32 +1,32 @@
 import sys
 
-sys.setrecursionlimit(50000000)
-
 read = sys.stdin.readline
 
 n, s = map(int, read().split())
 
 arr = list(map(int, read().split()))
 
-result = 999999
+start = 0
+end = 0
+permission = arr[0]
+
+result = 100001
 
 
-def dfs(cur_idx, cur_sum, cur_cnt):
-    global result
+while True:
 
-    if cur_sum >= s:
-        result = min(result, cur_cnt)
-
-    if cur_idx == n:
-        return
-
-    dfs(cur_idx + 1, cur_sum, cur_cnt)
-    dfs(cur_idx + 1, cur_sum + arr[cur_idx], cur_cnt + 1)
-
-
-dfs(0, 0, 0)
-
-print(result if result != 999999 else 0)
+    if permission >= s:
+        permission -= arr[start]
+        result = min(result, end - start+1)
+        start += 1
+    else:
+        end += 1
+        if end == n:
+            break
+        permission += arr[end]
 
 
-# dfs로는 안된다.
+if result == 100001:
+    print(0)
+else:
+    print(result)
