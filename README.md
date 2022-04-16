@@ -12,11 +12,11 @@ site address : [codeup](https://codeup.kr/problemsetsol.php?psid=33)
 
 1) study book ⭕
 
-2) go to programmers, Solve Steps 1 and 2
+2) go to programmers, Solve Steps 1 and 2 👈 **(now)**
 
 [programmers](https://programmers.co.kr/learn/challenges)
 
-3) go to baekjoon, when i can't solve the 'A' algorithm well, Solving 50 questions each. 👈 **(now)**
+3) go to baekjoon, when i can't solve the 'A' algorithm well, Solving 50 questions each. ⭕ 
 
 [BAEKJOON](https://www.acmicpc.net/problem/tags)
 
