@@ -1,6 +1,4 @@
 def solution(id_list, reports, k):
-    answer = []
-
     dic_report = {id: [] for id in id_list}
     answer = [0] * len(id_list)
 
