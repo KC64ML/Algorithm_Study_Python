@@ -5,33 +5,32 @@ read = sys.stdin.readline
 n = int(read())
 
 d = {i: [] for i in range(n)}
-previousICB = [0] * 200100  # i번째이면 i-1 까지 컬러 볼 합 저장 리스트
-previousICB2 = [0] * 200100  # i번째이면 i-1 까지 컬러 볼 합 저장 리스트
 answer = [0] * n
 totalSum = 0
+arrC = [0] * 200020
+arrS = [0] * 2020
+
 
 for i in range(n):
     c, s = map(int, read().split())
 
-    d[i].append(c)
     d[i].append(s)
+    d[i].append(c-1)
 
 colorBall = list(d.items())
 
-colorBall.sort(key=lambda x: (x[1][1]))
-beforeColorBall = 0
-for idx, in_colorBall in colorBall:
-    if previousICB[in_colorBall[0]]:
-        answer[idx] = totalSum - previousICB[in_colorBall[0]]
-    else:
-        answer[idx] = totalSum
+colorBall.sort(key=lambda x: (x[1]))
 
-    if beforeColorBall != in_colorBall[0] and previousICB2[in_colorBall[1]]:
-        answer[idx] -= in_colorBall[1] * previousICB2[in_colorBall[1]]
+for i in range(n):
+    idx, [weight, color] = colorBall[i]
 
-    previousICB2[in_colorBall[1]] += 1
-    totalSum += in_colorBall[1]
-    previousICB[in_colorBall[0]] += in_colorBall[1]
-    beforeColorBall = in_colorBall[0]
+    arrC[color] += weight
+    arrS[weight] += weight
+    totalSum += weight
+
+    answer[idx] = totalSum - arrC[color] - arrS[weight] + weight
+
+    if i != 0 and weight == colorBall[i-1][1][0] and color == colorBall[i-1][1][1]:
+        answer[idx] = answer[colorBall[i-1][0]]
 
 print('\n'.join(map(str, answer)))
