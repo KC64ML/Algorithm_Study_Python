@@ -1,5 +1,11 @@
-a = 1
-b = 2
-c = 3
+import sys
 
-print("{0}, {1}".format(a, c), "%d"%b)
+read = sys.stdin.readline
+
+n = int(read())
+
+for i in range(1, 2 * n):
+    if i <= n:
+        print('*' * i)
+    else:
+        print('*' * (2 * n - i))
