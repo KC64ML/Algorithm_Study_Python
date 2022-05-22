@@ -2,10 +2,12 @@ import sys
 
 read = sys.stdin.readline
 
-n = int(read())
+s = int(read())
 
-for i in range(1, 2 * n):
-    if i <= n:
-        print('*' * i)
-    else:
-        print('*' * (2 * n - i))
+
+n = 1
+
+while (n +1) * n <= s * 2:
+    n += 1
+
+print(n-1)
