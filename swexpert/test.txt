@@ -1,7 +1,6 @@
-3
-aaaab
-aaaaaaa
-aaaab
-aaaaa
-aaaaaaa
-aaaaa
+5
+4 0
+4 30
+4 47
+5 31
+5 62
