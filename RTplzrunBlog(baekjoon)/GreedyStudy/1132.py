@@ -1,29 +1,30 @@
-# 문자열에서 가장 긴 문자열을 찾아
-# 0번째 문자열 값이 가장 큰 값이다.
-
-# dist['A'] += (현재 i번째 행의 문자열 길이 - 인덱스)
-
 import sys
 
 read = sys.stdin.readline
 
 n = int(read())
-arr = []
+
+alpha = [[0, False] for _ in range(10)]
 
 for i in range(n):
-    arr.append(list(read().rstrip()))
+    a = read().rstrip()
+    m = 1
+    alpha[ord(a[0]) - 65][1] = True
+    for j in range(len(a) - 1, -1, -1):
+        alpha[ord(a[j]) - 65][0] += m
+        m *= 10
 
-dist = {}
+alpha.sort(reverse=True)
 
-for i in range(ord('J') - ord('A') + 1):
-    dist[chr(ord('A') + i)] = 0
+if alpha[9][1]:
+    for i in range(8,-1,-1):
+        if not alpha[i][1]:
+            del alpha[i]
+            break
 
-for in_arr in arr:
-    for i in range(len(in_arr)):
-        dist[in_arr[i]] += len(in_arr) - i
+answer = 0
 
-l_dist = list(dist.items())
-l_dist.sort(key= lambda x:-x[1])
+for i in range(9):
+    answer += alpha[i][0] * (9-i)
 
-dist = dict(l_dist)
-# 딕셔너리를 9 ~ 1로 하고, 숫자로 변경한다.
+print(answer)
