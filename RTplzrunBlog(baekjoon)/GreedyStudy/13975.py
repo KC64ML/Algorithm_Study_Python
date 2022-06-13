@@ -19,3 +19,4 @@ for i in range(t):
         answer += (first + second)
         heapq.heappush(twosumcost, first + second)
     print(answer)
+
