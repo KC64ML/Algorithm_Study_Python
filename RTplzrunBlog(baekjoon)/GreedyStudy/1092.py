@@ -35,3 +35,5 @@ else:
                 weight[i] = 0
 
     print(answer)
+
+
