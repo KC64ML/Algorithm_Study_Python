@@ -1,2 +1,1 @@
-print(ord('N') - ord('A'))
-print(ord('J') - ord('A'))
+# 참고 : https://bellog.tistory.com/152
